@@ -51,6 +51,11 @@ app/logs/
 # OS
 .DS_Store
 Thumbs.db
+*:Zone.Identifier
+
+# Backups
+*.bak
+*.back
 
 # Local user settings（配布・追跡しない）
 settings.json
