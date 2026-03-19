@@ -153,10 +153,23 @@ async function initApp() {
   };
 
   let isRunning = false; // 多重実行防止フラグ
+  let isComposingIME = false; // IME入力中フラグ（compositionイベント用）
+
+  // IME composition イベント（日本語入力対応）
+  inputEl.addEventListener("compositionstart", () => {
+    isComposingIME = true;
+  });
+  inputEl.addEventListener("compositionend", () => {
+    isComposingIME = false;
+  });
 
   // ユーザー入力を処理してエージェントに送信
   inputEl.addEventListener("keydown", async (event) => {
-    if (event.isComposing || event.key !== "Enter") {
+    // IME入力中は処理しない（複数の検出方法でフォールバック）
+    if (isComposingIME || event.isComposing || event.key === "Process" || event.keyCode === 229) {
+      return;
+    }
+    if (event.key !== "Enter") {
       return;
     }
     event.preventDefault();

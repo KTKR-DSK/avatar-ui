@@ -96,6 +96,55 @@ npm install             # 初回のみ
 npm run dev:all
 ```
 
+#### WSL2 (Windows Subsystem for Linux)
+
+WSL2では日本語入力のために追加設定が必要です。
+
+**初回セットアップ:**
+
+```bash
+# fcitx5と日本語入力エンジンをインストール
+sudo apt update
+sudo apt install -y fcitx5 fcitx5-mozc
+
+# 環境変数を設定
+echo 'export GTK_IM_MODULE=fcitx' >> ~/.bashrc
+echo 'export QT_IM_MODULE=fcitx' >> ~/.bashrc
+echo 'export XMODIFIERS=@im=fcitx' >> ~/.bashrc
+source ~/.bashrc
+
+# fcitx5のMozc設定
+mkdir -p ~/.config/fcitx5
+cat > ~/.config/fcitx5/profile << 'EOF'
+[Groups/0]
+Name=Default
+Default Layout=us
+DefaultIM=mozc
+
+[Groups/0/Items/0]
+Name=keyboard-us
+Layout=
+
+[Groups/0/Items/1]
+Name=mozc
+Layout=
+
+[GroupOrder]
+0=Default
+EOF
+```
+
+**起動（2回目以降）:**
+
+```bash
+cd avatar-ui
+./start-wsl.sh
+```
+
+日本語入力の切り替えは**変換キー**または**Ctrl+Space**で行います。
+
+> WSL2では半角/全角キーはEscapeと同じキーコードにマッピングされるため使用できません。
+
 #### Windows (PowerShell)
 
 ```powershell
